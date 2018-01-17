@@ -1,3 +1,5 @@
+/* EXPLAIN QUERY PLAN */
+
 CREATE TABLE movies (
   id INTEGER PRIMARY KEY,
   name TEXT DEFAULT NULL,
@@ -21,35 +23,47 @@ CREATE TABLE roles (
 /* sqlite3 imdb-large.sqlite3.db */
 /* Birthyear */
 
-SELECT name FROM movies WHERE year=1989;
+SELECT name 
+  WHERE year = 1989;
+  FROM movies 
 
 /* 1982 */
-SELECT COUNT(name) FROM movies WHERE year=1982;
+SELECT COUNT(name) 
+  FROM movies 
+  WHERE year=1982;
 
 /* Stacktors */
 
 SELECT id, first_name, last_name, gender 
-    FROM actors 
-    WHERE first_name LIKE "stack" 
-    OR last_name LIKE "stack";
+  FROM actors 
+  WHERE first_name LIKE "stack" 
+  OR last_name LIKE "stack";
 
 /* Fame Name Game */
-SELECT first_name, COUNT(first_name) AS OCCURRANCES FROM actors GROUP BY first_name ORDER BY OCCURRANCES DESC LIMIT 10;
+SELECT first_name, COUNT(first_name) as OCCURRANCES 
+  FROM actors 
+  GROUP BY first_name 
+  ORDER BY OCCURRANCES desc LIMIT 10;
 
-SELECT last_name, COUNT(last_name) AS OCCURRANCES FROM actors GROUP BY last_name ORDER BY OCCURRANCES DESC LIMIT 10;
+SELECT last_name, COUNT(last_name) AS OCCURRANCES 
+  FROM actors 
+  GROUP BY last_name 
+  ORDER BY OCCURRANCES DESC LIMIT 10;
 
-SELECT first_name || ' ' || last_name, COUNT(first_name || last_name) AS OCCURRANCES FROM actors GROUP BY first_name || last_name ORDER BY OCCURRANCES DESC LIMIT 10;
+SELECT first_name || ' ' || last_name, COUNT(first_name || last_name) AS OCCURRANCES 
+  FROM actors 
+  GROUP BY first_name || last_name 
+  ORDER BY OCCURRANCES DESC LIMIT 10;
 
 /* Prolific */
-SELECT actors.first_name, actors.last_name, 
-COUNT(roles.actor_id) 
-AS role_counts 
-FROM roles 
-JOIN actors 
-ON roles.actor_id=actors.id 
-GROUP BY actor_id 
-ORDER BY role_counts 
-DESC LIMIT 100;
+SELECT actors.first_name, actors.last_name, COUNT(roles.actor_id) 
+  AS role_counts 
+  FROM roles 
+  JOIN actors 
+    ON roles.actor_id=actors.id 
+  GROUP BY actor_id 
+  ORDER BY role_counts 
+  DESC LIMIT 100;
 
 /* Bottom of the Barrel */
 SELECT genre, COUNT(genre) 
@@ -63,10 +77,8 @@ SELECT genre, COUNT(genre)
 /* Braveheart */
 SELECT actors.first_name, actors.last_name
   FROM movies
-    INNER JOIN actors
-    ON roles.actor_id = actors.id
-    INNER JOIN roles
-    ON roles.movie_id = movies.id
+    INNER JOIN actors ON roles.actor_id = actors.id
+    INNER JOIN roles ON roles.movie_id = movies.id
   WHERE movies.name = 'Braveheart' AND movies.year = '1995'
   GROUP BY actors.last_name
   ORDER BY actors.last_name ASC;
