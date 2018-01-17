@@ -1,0 +1,46 @@
+CREATE TABLE movies (
+  id INTEGER PRIMARY KEY,
+  name TEXT DEFAULT NULL,
+  year INTEGER DEFAULT NULL,
+  rank REAL DEFAULT NULL
+);
+
+CREATE TABLE actors (
+  id INTEGER PRIMARY KEY,
+  first_name TEXT DEFAULT NULL,
+  last_name TEXT DEFAULT NULL,
+  gender TEXT DEFAULT NULL
+);
+
+CREATE TABLE roles (
+  actor_id INTEGER,
+  movie_id INTEGER,
+  role_name TEXT DEFAULT NULL,
+);
+
+/* sqlite3 imdb-large.sqlite3.db */
+/* Birthyear */
+
+SELECT name FROM movies WHERE year=1989;
+
+/* 1982 */
+SELECT COUNT(name) FROM movies WHERE year=1982;
+
+/* Stacktors */
+
+SELECT id, first_name, last_name, gender FROM actors WHERE first_name LIKE "stack" OR last_name LIKE "stack";
+
+/* Fame Name Game */
+SELECT first_name, COUNT(first_name) AS OCCURRANCES FROM actors GROUP BY first_name ORDER BY OCCURRANCES DESC LIMIT 10;
+
+SELECT last_name, COUNT(last_name) AS OCCURRANCES FROM actors GROUP BY last_name ORDER BY OCCURRANCES DESC LIMIT 10;
+
+SELECT first_name || ' ' || last_name, COUNT(first_name || last_name) AS OCCURRANCES FROM actors GROUP BY first_name || last_name ORDER BY OCCURRANCES DESC LIMIT 10;
+
+/* Prolific */
+SELECT actors.first_name, actors.last_name, COUNT(roles.actor_id) AS role_counts FROM roles JOIN actors ON roles.actor_id=actors.id GROUP BY actor_id ORDER BY role_counts DESC LIMIT 100;
+
+/* Bottom of the Barrel */
+SELECT genre, COUNT(genre) AS num_movies_by_genres FROM movies JOIN movies_genres ON movies_genres.movie_id=movies.id GROUP BY genre ORDER BY num_movies_by_genres ASC;
+
+/* Braveheart */
